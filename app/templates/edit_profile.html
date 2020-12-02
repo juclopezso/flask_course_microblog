@@ -1,21 +1,35 @@
 {% extends "base.html" %} {% block content %}
-<h1>Edit Profile</h1>
-<form action="" method="post">
-  {{ form.hidden_tag() }}
-  <p>
-    {{ form.username.label }}<br />
-    {{ form.username(size=32) }}<br />
-    {% for error in form.username.errors %}
-    <span style="color: red">{{ error }}</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.about_me.label }}<br />
-    {{ form.about_me(cols=50, rows=4) }}<br />
-    {% for error in form.about_me.errors %}
-    <span style="color: red">{{ error }}</span>
-    {% endfor %}
-  </p>
-  <p>{{ form.submit() }}</p>
-</form>
+<template>
+  <q-page>
+    <div class="q-pa-md row justify-center q-gutter-md">
+      <div class="col-auto">
+        <q-card class="my-card">
+          <q-card-section>
+            <div class="text-h4">Edit profile</div>
+            <form class="q-pa-md" action="" method="post" novalidate>
+              {{ form.hidden_tag() }}
+              <p>
+                {{ form.username.label }}<br />
+                {{ form.username(size=32) }}<br />
+                {% for error in form.username.errors %}
+                <span style="color: red">{{ error }}</span>
+                {% endfor %}
+              </p>
+              <p>
+                {{ form.about_me.label }}<br />
+                {{ form.about_me(cols=50, rows=4) }}<br />
+                {% for error in form.about_me.errors %}
+                <span style="color: red">{{ error }}</span>
+                {% endfor %}
+              </p>
+              <div>
+                <q-btn label="Submit" type="submit" color="primary" />
+              </div>
+            </form>
+          </q-card-section>
+        </q-card>
+      </div>
+    </div>
+  </q-page>
+</template>
 {% endblock %}

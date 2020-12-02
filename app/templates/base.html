@@ -1,41 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Quasar UMD -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/quasar@1.14.5/dist/quasar.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- end quasar UMD -->
     {% if title %}
     <title>{{ title }} - Microblog</title>
     {% else %}
     <title>Welcome to Microblog</title>
     {% endif %}
-</head>
-<body>
-    <div>Microblog: 
-        <a href="{{ url_for('index') }}">Home</a>
-        <!-- current_user.is_anonymous expression is going to be True only when the user is not logged in -->
-        {% if current_user.is_anonymous %}
-        <a href="{{ url_for('login') }}">Login</a>
-        {% else %}
-        <!-- passing the username to the user route -->
-        <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
-        <a href="{{ url_for('logout') }}">Logout</a>
-        {% endif %}
+  </head>
+  <body>
+    <div id="app">
+      <template>
+        <q-layout view="hHh LpR fFf">
+          <q-header elevated class="bg-primary text-white">
+            <q-toolbar>
+              <q-avatar>
+                <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" />
+              </q-avatar>
+              <q-toolbar-title>
+                <q-btn
+                  type="a"
+                  href="{{ url_for('index') }}"
+                  class="q-mr-md"
+                  flat
+                  dense
+                  label="Microblog"
+                ></q-btn>
+              </q-toolbar-title>
+              <q-space></q-space>
+              <div class="q-pa-md q-gutter-sm">
+                {% if current_user.is_anonymous %}
+                <q-btn
+                  type="a"
+                  href="{{ url_for('login') }}"
+                  outline
+                  label="Login"
+                ></q-btn>
+                {% else %}
+                <q-btn
+                  type="a"
+                  href="{{ url_for('user', username=current_user.username) }}"
+                  outline
+                  label="Profile"
+                ></q-btn>
+                {% endif %}
+                <q-btn
+                  type="a"
+                  href="{{ url_for('logout') }}"
+                  label="Logout"
+                  color="red"
+                ></q-btn>
+              </div>
+            </q-toolbar>
+          </q-header>
+
+          <q-page-container>
+            <!-- flash messages list seted with the method flash() -->
+            <!-- with construct to assign the result of calling get_flashed_messages() to a messages variable -->
+            <!-- once the message is flashed, it is removed from the list -->
+            {% with messages = get_flashed_messages() %} {% if messages %}
+            <q-banner dense inline-actions class="bg-grey-3">
+              <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %} {% endwith %}
+              <template v-slot:action>
+                <!-- <q-btn flat color="white" label="Turn ON Wifi" /> -->
+              </template>
+            </q-banner>
+            <!-- define where the derived templates can insert themselves -->
+            <!-- content has to be unique -->
+            {% block content %} {% endblock %}
+          </q-page-container>
+        </q-layout>
+      </template>
     </div>
-    <hr>
-    <!-- flash messages list seted with the method flash() -->
-    <!-- with construct to assign the result of calling get_flashed_messages() to a messages variable -->
-    <!-- once the message is flashed, it is removed from the list -->
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-    <!-- define where the derived templates can insert themselves -->
-    <!-- content has to be unique -->
-    {% block content %} {% endblock %}
-</body>
+
+    <!-- Quasar config -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@^2.0.0/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@1.14.5/dist/quasar.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@1.14.5/dist/lang/es.umd.min.js"></script>
+    <!-- default language -->
+    <script>
+      Quasar.lang.set(Quasar.lang.es);
+      new Vue({
+        el: "#app",
+        data: function () {
+          return {
+            model: "one",
+          };
+        },
+        methods: {},
+        // ...etc
+      });
+    </script>
+  </body>
 </html>

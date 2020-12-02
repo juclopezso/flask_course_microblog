@@ -2,8 +2,25 @@
 {% extends "base.html" %}
 <!-- content name is unique -->
 {% block content %}
-    <h1>Hi, {{ current_user.username }}!</h1>
-    {% for post in posts %}
-    <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
-    {% endfor %}
+<q-page>
+  <div class="q-pa-md row justify-center q-gutter-md">
+    <div class="col-auto">
+      <q-card class="my-card">
+        <q-card-section>
+          <div class="text-h2 text-center q-pa-md">
+            Hi, {{ current_user.username }}!
+          </div>
+          <hr />
+          {% for post in posts %}
+          <div class="q-mt-md">
+            <p class="q-ml-md q-mr-md">
+              {{ post.author.username }} says: <b>{{ post.body }}</b>
+            </p>
+          </div>
+          {% endfor %}
+        </q-card-section>
+      </q-card>
+    </div>
+  </div>
+</q-page>
 {% endblock %}
